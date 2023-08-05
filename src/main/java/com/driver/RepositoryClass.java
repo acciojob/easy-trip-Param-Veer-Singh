@@ -68,6 +68,8 @@ public class RepositoryClass {
 
         //Calculate the total number of people who have flights on that day on a particular airport
         //This includes both the people who have come for a flight and who have landed on an airport after their flight
+        if(!airportHashMap.containsKey(airportName))return 0;
+
         City city = airportHashMap.get(airportName).getCity();
         Integer totalNumberOfPeopleFromCity = getPassengersInFlight(fromCityHashMap.get(city));
         Integer totalNumberOfPeopleToCity = getPassengersInFlight(toCityHashMap.get(city));
@@ -111,8 +113,8 @@ public class RepositoryClass {
         }
         else{
             passengerFlightPair.put(passengerId,flightId);
-            passengerBookingCountPair.put(passengerId,passengerBookingCountPair.getOrDefault(passengerId,0)+1);
-            noOfPassengerInFlight.put(flightId,noOfPassengerInFlight.getOrDefault(flightId,0)+1);
+            passengerBookingCountPair.put(passengerId,passengerBookingCountPair.get(passengerId)+1);
+            noOfPassengerInFlight.put(flightId,noOfPassengerInFlight.get(flightId)+1);
             return "SUCCESS";
         }
     }
