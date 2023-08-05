@@ -69,21 +69,14 @@ public class RepositoryClass {
         //Calculate the total number of people who have flights on that day on a particular airport
         //This includes both the people who have come for a flight and who have landed on an airport after their flight
         if(!airportHashMap.containsKey(airportName))return 0;
-
+        int totalNumberOfPassengers = 0;
         String city = airportHashMap.get(airportName).getCity().name();
-        Integer totalNumberOfPeopleFromCity = getPassengersInFlight(fromCityHashMap.get(city),date);
-        Integer totalNumberOfPeopleToCity = getPassengersInFlight(toCityHashMap.get(city),date);
-        return totalNumberOfPeopleFromCity + totalNumberOfPeopleToCity;
-    }
-
-    public Integer getPassengersInFlight(List<Integer> listOfFlights, Date date){
-        Integer totalNumberOfPeople = 0;
-
-        for(Integer flightId : listOfFlights){
-            if(noOfPassengerInFlight.containsKey(flightId) && flightHashMap.containsKey(flightId) && flightHashMap.get(flightId).getFlightDate() == date)
-            totalNumberOfPeople += noOfPassengerInFlight.get(flightId);
+        for(Integer flightId : flightHashMap.keySet()){
+            if(flightHashMap.get(flightId).getFlightDate() == date && (flightHashMap.get(flightId).getFromCity().name() == city || flightHashMap.get(flightId).getToCity().name() == city )){
+                totalNumberOfPassengers += noOfPassengerInFlight.get(flightId);
+            }
         }
-        return totalNumberOfPeople;
+        return totalNumberOfPassengers;
     }
 
     public int calculateFlightFare(Integer flightId){
