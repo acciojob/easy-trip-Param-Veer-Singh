@@ -72,7 +72,7 @@ public class RepositoryClass {
         int totalNumberOfPassengers = 0;
         String city = airportHashMap.get(airportName).getCity().name();
         for(Integer flightId : flightHashMap.keySet()){
-            if(flightHashMap.get(flightId).getFlightDate() == date && (flightHashMap.get(flightId).getFromCity().name() == city || flightHashMap.get(flightId).getToCity().name() == city )){
+            if(flightHashMap.get(flightId).getFlightDate().equals(date) && (flightHashMap.get(flightId).getFromCity().name().equals(city) || flightHashMap.get(flightId).getToCity().name().equals(city) )){
                 totalNumberOfPassengers += noOfPassengerInFlight.get(flightId);
             }
         }
