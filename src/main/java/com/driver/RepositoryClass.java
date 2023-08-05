@@ -79,7 +79,7 @@ public class RepositoryClass {
     public Integer getPassengersInFlight(List<Integer> listOfFlights){
         Integer totalNumberOfPeople = 0;
 
-        for(Integer flightId : flightHashMap.keySet()){
+        for(Integer flightId : listOfFlights){
 
             if(noOfPassengerInFlight.containsKey(flightId))
             totalNumberOfPeople += noOfPassengerInFlight.get(flightId);
@@ -157,20 +157,16 @@ public class RepositoryClass {
         //return null incase the flightId is invalid or you are not able to find the airportName
         if(!flightHashMap.containsKey(flightId))return null;
 
-        City fromCity = null;
-        for(City city : fromCityHashMap.keySet()){
-            List<Integer> listOfFlights = fromCityHashMap.get(city);
-            if(listOfFlights.contains(flightId)){
-                fromCity = city;
-                break;
-            }
-        }
+        String airport = null;
+
+        City fromCity = flightHashMap.get(flightId).getFromCity();
+
         if(fromCity == null)return null;
 
         for(String airportName : airportHashMap.keySet()){
-            if(airportHashMap.get(airportName).getAirportName().equals(fromCity.toString()))return airportName;
+            if(airportHashMap.get(airportName).getAirportName().equals(fromCity.name())) airport = airportName;
         }
-        return null;
+        return airport;
     }
 
     public int calculateRevenueOfAFlight(Integer flightId){
