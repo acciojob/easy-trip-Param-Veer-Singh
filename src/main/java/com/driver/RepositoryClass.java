@@ -16,8 +16,8 @@ public class RepositoryClass {
 
     HashMap<String, Airport> airportHashMap = new HashMap<>();
     HashMap<Integer, Flight> flightHashMap = new HashMap<>();
-    HashMap<City, List<Integer>> fromCityHashMap  = new HashMap<>();
-    HashMap<City, List<Integer>> toCityHashMap = new HashMap<>();
+    HashMap<String, List<Integer>> fromCityHashMap  = new HashMap<>();
+    HashMap<String, List<Integer>> toCityHashMap = new HashMap<>();
     HashMap<Integer, Integer> noOfPassengerInFlight  = new HashMap<>();
     HashMap<Integer, Integer> passengerFlightPair  = new HashMap<>();
     HashMap<Integer, Integer> passengerBookingCountPair = new HashMap<>();
@@ -70,7 +70,7 @@ public class RepositoryClass {
         //This includes both the people who have come for a flight and who have landed on an airport after their flight
         if(!airportHashMap.containsKey(airportName))return 0;
 
-        City city = airportHashMap.get(airportName).getCity();
+        String city = airportHashMap.get(airportName).getCity().name();
         Integer totalNumberOfPeopleFromCity = getPassengersInFlight(fromCityHashMap.get(city),date);
         Integer totalNumberOfPeopleToCity = getPassengersInFlight(toCityHashMap.get(city),date);
         return totalNumberOfPeopleFromCity + totalNumberOfPeopleToCity;
@@ -146,8 +146,8 @@ public class RepositoryClass {
         //Return a "SUCCESS" message string after adding a flight.
         flightHashMap.put(flight.getFlightId(),flight);
         noOfPassengerInFlight.put(flight.getFlightId(),0);
-        fromCityHashMap.put(flight.getFromCity(),new ArrayList<>());
-        toCityHashMap.put(flight.getToCity(),new ArrayList<>());
+        fromCityHashMap.put(flight.getFromCity().name(),new ArrayList<>());
+        toCityHashMap.put(flight.getToCity().name(),new ArrayList<>());
     }
 
     public String getAirportNameFromFlightId(Integer flightId){
