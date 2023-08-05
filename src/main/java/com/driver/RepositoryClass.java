@@ -54,13 +54,14 @@ public class RepositoryClass {
         //Find the duration by finding the shortest flight that connects these 2 cities directly
         //If there is no direct flight between 2 cities return -1.
 
-        double shortestDistance = -1;
+        double shortestDistance = Double.MAX_VALUE;
         for (Integer flightId : flightHashMap.keySet()){
             if(flightHashMap.get(flightId).getFromCity() == fromCity && flightHashMap.get(flightId).getToCity() == toCity){
                 shortestDistance = Math.min(shortestDistance,flightHashMap.get(flightId).getDuration());
             }
         }
-        return shortestDistance;
+        if(shortestDistance == Double.MAX_VALUE)return -1;
+        else return shortestDistance;
     }
 
     public int getNumberOfPeopleOn(Date date,String airportName){
@@ -77,6 +78,8 @@ public class RepositoryClass {
         Integer totalNumberOfPeople = 0;
 
         for(Integer flightId : flightHashMap.keySet()){
+
+            if(noOfPassengerInFlight.containsKey(flightId))
             totalNumberOfPeople += noOfPassengerInFlight.get(flightId);
         }
         return totalNumberOfPeople;
@@ -101,7 +104,7 @@ public class RepositoryClass {
         //Also if the passenger has already booked a flight then also return "FAILURE".
         //else if you are able to book a ticket then return "SUCCESS"
         if (noOfPassengerInFlight.get(flightId) == flightHashMap.get(flightId).getMaxCapacity()){
-            return  "FAILURE";
+            return "FAILURE";
         }
         else if(passengerFlightPair.containsKey(passengerId)){
             return "FAILURE";
@@ -120,9 +123,13 @@ public class RepositoryClass {
         // then return a "FAILURE" message
         // Otherwise return a "SUCCESS" message
         // and also cancel the ticket that passenger had booked earlier on the given flightId
-        if(!flightHashMap.containsKey(flightId) || !passengerHashMap.containsKey(passengerId) || !passengerFlightPair.containsKey(passengerId)){
+        if(!flightHashMap.containsKey(flightId)){
             return "FAILURE";
-        }else{
+        } else if (!passengerHashMap.containsKey(passengerId)) {
+            return "FAILURE";
+        } else if (!passengerFlightPair.containsKey(passengerId)) {
+            return "FAILURE";
+        } else{
             passengerFlightPair.remove(passengerId);
             passengerBookingCountPair.put(passengerId,passengerBookingCountPair.get(passengerId)-1);
             noOfPassengerInFlight.put(flightId,noOfPassengerInFlight.get(flightId)-1);
@@ -150,6 +157,8 @@ public class RepositoryClass {
 
         //We need to get the starting airportName from where the flight will be taking off (Hint think of City variable if that can be of some use)
         //return null incase the flightId is invalid or you are not able to find the airportName
+        if(!flightHashMap.containsKey(flightId))return null;
+
         City fromCity = null;
         for(City city : fromCityHashMap.keySet()){
             List<Integer> listOfFlights = fromCityHashMap.get(city);
@@ -158,6 +167,8 @@ public class RepositoryClass {
                 break;
             }
         }
+        if(fromCity == null)return null;
+
         for(String airportName : airportHashMap.keySet()){
             if(airportHashMap.get(airportName).getAirportName().equals(fromCity.toString()))return airportName;
         }
