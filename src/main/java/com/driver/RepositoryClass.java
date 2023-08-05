@@ -108,7 +108,7 @@ public class RepositoryClass {
         if (noOfPassengerInFlight.get(flightId) == flightHashMap.get(flightId).getMaxCapacity()){
             return "FAILURE";
         }
-        else if(passengerFlightPair.containsKey(passengerId)){
+        else if(passengerFlightPair.containsKey(passengerId) && passengerFlightPair.get(passengerId) == flightId){
             return "FAILURE";
         }
         else{
@@ -125,17 +125,13 @@ public class RepositoryClass {
         // then return a "FAILURE" message
         // Otherwise return a "SUCCESS" message
         // and also cancel the ticket that passenger had booked earlier on the given flightId
-        if(!flightHashMap.containsKey(flightId)){
-            return "FAILURE";
-        } else if (!passengerHashMap.containsKey(passengerId)) {
-            return "FAILURE";
-        } else if (!passengerFlightPair.containsKey(passengerId)) {
-            return "FAILURE";
-        } else{
+        if(passengerFlightPair.containsKey(passengerId) && passengerFlightPair.get(passengerId) == flightId){
             passengerFlightPair.remove(passengerId);
             passengerBookingCountPair.put(passengerId,passengerBookingCountPair.get(passengerId)-1);
             noOfPassengerInFlight.put(flightId,noOfPassengerInFlight.get(flightId)-1);
             return "SUCCESS";
+        }else{
+            return "FAILURE";
         }
     }
 
