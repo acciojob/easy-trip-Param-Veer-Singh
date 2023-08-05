@@ -71,16 +71,16 @@ public class RepositoryClass {
         if(!airportHashMap.containsKey(airportName))return 0;
 
         City city = airportHashMap.get(airportName).getCity();
-        Integer totalNumberOfPeopleFromCity = getPassengersInFlight(fromCityHashMap.get(city));
-        Integer totalNumberOfPeopleToCity = getPassengersInFlight(toCityHashMap.get(city));
+        Integer totalNumberOfPeopleFromCity = getPassengersInFlight(fromCityHashMap.get(city),date);
+        Integer totalNumberOfPeopleToCity = getPassengersInFlight(toCityHashMap.get(city),date);
         return totalNumberOfPeopleFromCity + totalNumberOfPeopleToCity;
     }
 
-    public Integer getPassengersInFlight(List<Integer> listOfFlights){
+    public Integer getPassengersInFlight(List<Integer> listOfFlights, Date date){
         Integer totalNumberOfPeople = 0;
 
         for(Integer flightId : listOfFlights){
-            if(noOfPassengerInFlight.containsKey(flightId) && flightHashMap.containsKey(flightId))
+            if(noOfPassengerInFlight.containsKey(flightId) && flightHashMap.containsKey(flightId) && flightHashMap.get(flightId).getFlightDate() == date)
             totalNumberOfPeople += noOfPassengerInFlight.get(flightId);
         }
         return totalNumberOfPeople;
@@ -158,12 +158,10 @@ public class RepositoryClass {
 
         String airport = null;
 
-        City fromCity = flightHashMap.get(flightId).getFromCity();
-
-        if(fromCity == null)return null;
+        String fromCity = flightHashMap.get(flightId).getFromCity().name();
 
         for(String airportName : airportHashMap.keySet()){
-            if(airportHashMap.get(airportName).getCity().equals(fromCity.name())) airport = airportName;
+            if(airportHashMap.get(airportName).getCity().name().equals(fromCity)) airport = airportName;
         }
         return airport;
     }
