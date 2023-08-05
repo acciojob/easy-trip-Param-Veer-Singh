@@ -80,8 +80,7 @@ public class RepositoryClass {
         Integer totalNumberOfPeople = 0;
 
         for(Integer flightId : listOfFlights){
-
-            if(noOfPassengerInFlight.containsKey(flightId))
+            if(noOfPassengerInFlight.containsKey(flightId) && flightHashMap.containsKey(flightId))
             totalNumberOfPeople += noOfPassengerInFlight.get(flightId);
         }
         return totalNumberOfPeople;
@@ -164,7 +163,7 @@ public class RepositoryClass {
         if(fromCity == null)return null;
 
         for(String airportName : airportHashMap.keySet()){
-            if(airportHashMap.get(airportName).getAirportName().equals(fromCity.name())) airport = airportName;
+            if(airportHashMap.get(airportName).getCity().equals(fromCity.name())) airport = airportName;
         }
         return airport;
     }
